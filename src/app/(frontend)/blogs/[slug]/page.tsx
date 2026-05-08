@@ -159,7 +159,7 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
               color: '#374151',
             }}
           >
-            <RichText data={blog.content} />
+            {blog.content && <RichText data={blog.content as any} />}
           </div>
         </div>
 
