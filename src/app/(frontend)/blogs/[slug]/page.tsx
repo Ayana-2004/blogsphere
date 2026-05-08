@@ -159,7 +159,11 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
               color: '#374151',
             }}
           >
-            {blog.content && <RichText data={blog.content as any} />}
+            {blog.content && typeof blog.content === 'object' ? (
+              <RichText data={blog.content as any} />
+            ) : (
+              <p style={{ whiteSpace: 'pre-wrap', margin: '0' }}>{blog.content as string}</p>
+            )}
           </div>
         </div>
 
