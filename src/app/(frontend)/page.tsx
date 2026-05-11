@@ -17,16 +17,9 @@ export default async function HomePage({
 
   if (search) {
     where.or = [
-      {
-        title: {
-          contains: search,
-        },
-      },
-      {
-        slug: {
-          contains: search,
-        },
-      },
+      { title: { contains: search } },
+      { slug: { contains: search } },
+      { 'tags.tag': { contains: search } },
     ]
   }
   const blogs = await payload.find({ collection: 'blogs', where, limit: 12 })
