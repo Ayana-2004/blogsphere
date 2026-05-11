@@ -130,9 +130,9 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
       {/* Content */}
       <main style={{ maxWidth: '760px', margin: '0 auto', padding: '40px 24px' }}>
         {/* Cover Image */}
-        {typeof blog.coverImage === 'object' && blog.coverImage?.url && (
+        {(blog.coverImageUrl || (typeof blog.coverImage === 'object' && blog.coverImage?.url)) && (
           <img
-            src={blog.coverImage.url}
+            src={(blog.coverImageUrl as string) || (blog.coverImage as any)?.url}
             alt={blog.title}
             style={{
               width: '100%',
@@ -143,7 +143,6 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
             }}
           />
         )}
-
         <div
           style={{
             backgroundColor: 'white',
