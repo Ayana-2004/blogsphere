@@ -58,15 +58,14 @@ export default function EditBlogPage() {
     try {
       const formData = new FormData()
       formData.append('file', imageFile)
-      formData.append('alt', form.title || 'Blog cover image')
-      const res = await fetch('/api/media', {
+      formData.append('upload_preset', 'blogsphere_uploads')
+      const res = await fetch(`https://api.cloudinary.com/v1_1/dkkf4schl/image/upload`, {
         method: 'POST',
-        credentials: 'include',
         body: formData,
       })
       if (res.ok) {
         const data = await res.json()
-        return data.doc?.id || data.id
+        return data.secure_url
       }
       return null
     } catch {
@@ -85,9 +84,8 @@ export default function EditBlogPage() {
         coverImageId = await uploadImage()
       }
 
-      const blogData: any = { ...form }
-      if (coverImageId) blogData.coverImage = coverImageId
-
+     const blogData: any = { ...form }
+if (coverImageId) blogData.coverImageUrl = coverImageId
       const res = await fetch(`/api/blogs/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
