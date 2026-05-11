@@ -4,7 +4,6 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import { cloudinaryPlugin } from 'payload-cloudinary-plugin'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -32,12 +31,12 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    cloudinaryPlugin({
-      config: {
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
-        api_key: process.env.CLOUDINARY_API_KEY || '',
-        api_secret: process.env.CLOUDINARY_API_SECRET || '',
-      },
-    }),
+    // cloudinaryPlugin({
+    //   config: {
+    //     cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
+    //     api_key: process.env.CLOUDINARY_API_KEY || '',
+    //     api_secret: process.env.CLOUDINARY_API_SECRET || '',
+    //   },
+    // }),
   ],
 })
