@@ -84,8 +84,8 @@ export default function EditBlogPage() {
         coverImageId = await uploadImage()
       }
 
-     const blogData: any = { ...form }
-if (coverImageId) blogData.coverImageUrl = coverImageId
+      const blogData: any = { ...form }
+      if (coverImageId) blogData.coverImageUrl = coverImageId
       const res = await fetch(`/api/blogs/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
