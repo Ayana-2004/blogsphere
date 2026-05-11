@@ -1,23 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import cloudinary from '@/lib/cloudinary'
+import { uploadImageToCloudinary } from '@/lib/cloudinary'
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    const formData = await req.formData()
+    const file = formData.get('file') as File
 
-    const { image } = body
+    if (!file) {
+      return NextResponse.json({ success: false, error: 'No file provided' }, { status: 400 })
+    }
 
-    const uploadResponse = await cloudinary.uploader.upload(image, {
-      folder: 'blogsphere',
-    })
-
-    return NextResponse.json({
-      success: true,
-      url: uploadResponse.secure_url,
-    })
+    const url = await uploadImageToCloudinary(file)
+    return NextResponse.json({ success: true, url })
   } catch (error) {
     console.error(error)
-
     return NextResponse.json({ success: false, error: 'Upload failed' }, { status: 500 })
   }
 }
