@@ -186,6 +186,7 @@ export interface Blog {
   title: string;
   slug: string;
   coverImage?: (string | null) | Media;
+  coverImageUrl?: string | null;
   content?: {
     root: {
       type: string;
@@ -354,6 +355,7 @@ export interface BlogsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   coverImage?: T;
+  coverImageUrl?: T;
   content?: T;
   category?: T;
   tags?:

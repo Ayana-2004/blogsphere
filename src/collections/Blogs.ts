@@ -17,12 +17,16 @@ export const Blogs: CollectionConfig = {
       required: true,
       unique: true,
     },
-    {
-      name: 'coverImage',
-      type: 'upload',
-      relationTo: 'media',
-      required: false,
-    },
+   {
+  name: 'coverImage',
+  type: 'upload',
+  relationTo: 'media',
+  required: false,
+},
+{
+  name: 'coverImageUrl',
+  type: 'text',
+},
     {
       name: 'content',
       type: 'richText',

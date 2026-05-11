@@ -11,9 +11,24 @@ export default async function HomePage({
   const { search } = await searchParams
   const payload = await getPayload({ config: configPromise })
 
-  const where: any = { status: { equals: 'published' } }
-  if (search) where.title = { contains: search }
+  const where: any = {
+    status: { equals: 'published' },
+  }
 
+  if (search) {
+    where.or = [
+      {
+        title: {
+          contains: search,
+        },
+      },
+      {
+        slug: {
+          contains: search,
+        },
+      },
+    ]
+  }
   const blogs = await payload.find({ collection: 'blogs', where, limit: 12 })
 
   return (
