@@ -20,23 +20,20 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+
   collections: [Users, Media, Categories, Blogs],
+
   editor: lexicalEditor(),
+
   secret: process.env.PAYLOAD_SECRET || '',
+
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
   }),
+
   sharp,
-  plugins: [
-    // cloudinaryPlugin({
-    //   config: {
-    //     cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
-    //     api_key: process.env.CLOUDINARY_API_KEY || '',
-    //     api_secret: process.env.CLOUDINARY_API_SECRET || '',
-    //   },
-    // }),
-  ],
 })
