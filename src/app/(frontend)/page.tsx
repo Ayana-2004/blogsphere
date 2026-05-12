@@ -168,9 +168,9 @@ export default async function HomePage({
                       backgroundColor: '#dbeafe',
                     }}
                   >
-                    {typeof blog.coverImage === 'object' && blog.coverImage?.url ? (
+                    {blog.coverImageUrl ? (
                       <img
-                        src={blog.coverImage.url}
+                        src={blog.coverImageUrl}
                         alt={blog.title}
                         style={{
                           width: '100%',
