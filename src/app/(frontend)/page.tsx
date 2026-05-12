@@ -22,7 +22,12 @@ export default async function HomePage({
       { 'tags.tag': { contains: search } },
     ]
   }
-  const blogs = await payload.find({ collection: 'blogs', where, limit: 12 })
+  const blogs = await payload.find({
+    collection: 'blogs',
+    where,
+    limit: 12,
+    depth: 1,
+  })
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
