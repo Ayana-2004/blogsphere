@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -30,6 +31,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setLoading(true)
     setError('')
+
     try {
       const res = await fetch('/api/users/login', {
         method: 'POST',
@@ -37,10 +39,12 @@ export default function LoginPage() {
         body: JSON.stringify(data),
         credentials: 'include',
       })
+
       if (!res.ok) {
         setError('Invalid email or password')
         return
       }
+
       router.push('/dashboard')
     } catch {
       setError('Something went wrong')
@@ -82,9 +86,15 @@ export default function LoginPage() {
           >
             <span style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>B</span>
           </div>
+
           <Link
             href="/"
-            style={{ color: 'white', fontWeight: '700', fontSize: '18px', textDecoration: 'none' }}
+            style={{
+              color: 'white',
+              fontWeight: '700',
+              fontSize: '18px',
+              textDecoration: 'none',
+            }}
           >
             BlogSphere
           </Link>
@@ -126,17 +136,31 @@ export default function LoginPage() {
             >
               <span style={{ color: 'white', fontWeight: '700', fontSize: '22px' }}>B</span>
             </div>
+
             <h1
-              style={{ fontSize: '22px', fontWeight: '700', color: '#1e293b', margin: '0 0 4px' }}
+              style={{
+                fontSize: '22px',
+                fontWeight: '700',
+                color: '#1e293b',
+                margin: '0 0 4px',
+              }}
             >
               Welcome back
             </h1>
-            <p style={{ fontSize: '14px', color: '#64748b', margin: '0' }}>
+
+            <p
+              style={{
+                fontSize: '14px',
+                color: '#64748b',
+                margin: '0',
+              }}
+            >
               Sign in to your account
             </p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Email */}
             <div style={{ marginBottom: '16px' }}>
               <label
                 style={{
@@ -149,6 +173,7 @@ export default function LoginPage() {
               >
                 Email
               </label>
+
               <input
                 {...register('email')}
                 type="email"
@@ -163,13 +188,21 @@ export default function LoginPage() {
                   boxSizing: 'border-box',
                 }}
               />
+
               {errors.email && (
-                <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+                <p
+                  style={{
+                    color: '#ef4444',
+                    fontSize: '12px',
+                    marginTop: '4px',
+                  }}
+                >
                   {errors.email.message}
                 </p>
               )}
             </div>
 
+            {/* Password */}
             <div style={{ marginBottom: '24px' }}>
               <label
                 style={{
@@ -182,6 +215,7 @@ export default function LoginPage() {
               >
                 Password
               </label>
+
               <input
                 {...register('password')}
                 type="password"
@@ -196,13 +230,21 @@ export default function LoginPage() {
                   boxSizing: 'border-box',
                 }}
               />
+
               {errors.password && (
-                <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+                <p
+                  style={{
+                    color: '#ef4444',
+                    fontSize: '12px',
+                    marginTop: '4px',
+                  }}
+                >
                   {errors.password.message}
                 </p>
               )}
             </div>
 
+            {/* Error */}
             {error && (
               <div
                 style={{
@@ -213,32 +255,40 @@ export default function LoginPage() {
                   marginBottom: '16px',
                 }}
               >
-                <p style={{ color: '#dc2626', fontSize: '13px', margin: '0' }}>{error}</p>
+                <p
+                  style={{
+                    color: '#dc2626',
+                    fontSize: '13px',
+                    margin: '0',
+                  }}
+                >
+                  {error}
+                </p>
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: '100%',
-                backgroundColor: loading ? '#93c5fd' : '#3b82f6',
-                color: 'white',
-                padding: '12px',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: '600',
-                border: 'none',
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
+            {/* ShadCN Button */}
+            <Button type="submit" disabled={loading} className="w-full h-11">
               {loading ? 'Signing in...' : 'Sign In'}
-            </button>
+            </Button>
           </form>
 
-          <p style={{ textAlign: 'center', fontSize: '13px', color: '#64748b', marginTop: '20px' }}>
+          <p
+            style={{
+              textAlign: 'center',
+              fontSize: '13px',
+              color: '#64748b',
+              marginTop: '20px',
+            }}
+          >
             Don't have an account?{' '}
-            <Link href="/signup" style={{ color: '#3b82f6', fontWeight: '600' }}>
+            <Link
+              href="/signup"
+              style={{
+                color: '#3b82f6',
+                fontWeight: '600',
+              }}
+            >
               Sign up
             </Link>
           </p>
