@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
+import DashboardNavbar from '@/components/DahboardNavbar'
 
 export default function EditBlogPage() {
   const router = useRouter()
@@ -123,7 +124,8 @@ export default function EditBlogPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-      <nav
+      <DashboardNavbar />
+      {/* <nav
         style={{
           backgroundColor: '#1e293b',
           padding: '14px 32px',
@@ -159,7 +161,7 @@ export default function EditBlogPage() {
         >
           ← Back to Blogs
         </Link>
-      </nav>
+      </nav> */}
 
       <main style={{ maxWidth: '760px', margin: '0 auto', padding: '40px 24px' }}>
         <h1 style={{ fontSize: '24px', fontWeight: '800', color: '#1e293b', margin: '0 0 24px' }}>

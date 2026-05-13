@@ -161,7 +161,7 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
             {blog.content && typeof blog.content === 'object' ? (
               <RichText data={blog.content as any} />
             ) : (
-              <p style={{ whiteSpace: 'pre-wrap', margin: '0' }}>{blog.content as string}</p>
+              <p style={{ whiteSpace: 'pre-wrap', margin: '0' }}>{String(blog.content || '')}</p>
             )}
           </div>
         </div>

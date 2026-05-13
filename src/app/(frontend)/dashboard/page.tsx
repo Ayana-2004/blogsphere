@@ -4,6 +4,7 @@ import configPromise from '@payload-config'
 import { redirect } from 'next/navigation'
 import LogoutButton from './LogoutButton'
 import Link from 'next/link'
+import DashboardNavbar from '@/components/DahboardNavbar'
 
 export default async function DashboardPage() {
   const headersList = await headers()
@@ -22,7 +23,8 @@ export default async function DashboardPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-      <nav
+      <DashboardNavbar />
+      {/* <nav
         style={{
           backgroundColor: '#1e293b',
           padding: '14px 32px',
@@ -66,7 +68,7 @@ export default async function DashboardPage() {
           <span style={{ color: '#94a3b8', fontSize: '14px' }}>{user.name}</span>
           <LogoutButton />
         </div>
-      </nav>
+      </nav> */}
 
       <div
         style={{ backgroundColor: '#1e293b', padding: '32px', borderBottom: '1px solid #334155' }}
