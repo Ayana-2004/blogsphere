@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import LogoutButton from '@/app/(frontend)/dashboard/LogoutButton'
 
 export default function DashboardNavbar() {
   return (
@@ -55,6 +56,7 @@ export default function DashboardNavbar() {
         <Link href="/dashboard/blogs/create" style={{ color: 'white', textDecoration: 'none' }}>
           Create Blog
         </Link>
+        <LogoutButton />
       </div>
     </nav>
   )
