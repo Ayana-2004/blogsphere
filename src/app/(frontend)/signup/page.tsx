@@ -1,51 +1,94 @@
-'use client'
+'use client' // Makes this a client-side component in Next.js
 
+// React hook for managing state
 import { useState } from 'react'
+
+// React Hook Form for form handling
 import { useForm } from 'react-hook-form'
+
+// Connects Zod validation with React Hook Form
 import { zodResolver } from '@hookform/resolvers/zod'
+
+// Zod library for schema validation
 import { z } from 'zod'
+
+// Next.js router for page navigation
 import { useRouter } from 'next/navigation'
+
+// Next.js Link component for navigation without page reload
 import Link from 'next/link'
 
+// Validation schema using Zod
 const signupSchema = z.object({
+  // Name must contain minimum 2 characters
   name: z.string().min(2, 'Name must be at least 2 characters'),
+
+  // Email must be valid format
   email: z.string().email('Please enter a valid email'),
+
+  // Password must contain minimum 6 characters
   password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
+// Automatically creates TypeScript type from schema
 type SignupForm = z.infer<typeof signupSchema>
 
 export default function SignupPage() {
+  // Used for page redirection
   const router = useRouter()
+
+  // Stores error messages
   const [error, setError] = useState('')
+
+  // Stores loading state
   const [loading, setLoading] = useState(false)
 
+  // Initialize React Hook Form
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    register, // Connects inputs with form
+    handleSubmit, // Handles form submission
+    formState: { errors }, // Contains validation errors
   } = useForm<SignupForm>({
+    // Connect Zod validation
     resolver: zodResolver(signupSchema),
   })
 
+  // Function runs when form is submitted
   const onSubmit = async (data: SignupForm) => {
+    // Start loading
     setLoading(true)
+
+    // Clear old errors
     setError('')
+
     try {
+      // Send POST request to create user
       const res = await fetch('/api/users', {
         method: 'POST',
+
+        // Sending JSON data
         headers: { 'Content-Type': 'application/json' },
+
+        // Convert form data into JSON
         body: JSON.stringify(data),
+
+        // Include authentication cookies/session
         credentials: 'include',
       })
+
+      // If signup fails
       if (!res.ok) {
         setError('Email already exists or something went wrong')
         return
       }
+
+      // Redirect user to dashboard after successful signup
       router.push('/dashboard')
     } catch {
+      // Handle unexpected errors
       setError('Something went wrong')
     } finally {
+      // Stop loading in all cases
       setLoading(false)
     }
   }
@@ -53,13 +96,18 @@ export default function SignupPage() {
   return (
     <div
       style={{
+        // Full screen height
         minHeight: '100vh',
+
+        // Background color
         backgroundColor: '#f8fafc',
+
+        // Flex layout
         display: 'flex',
         flexDirection: 'column',
       }}
     >
-      {/* Navbar */}
+      {/* Navbar Section */}
       <nav
         style={{
           backgroundColor: '#1e293b',
@@ -69,7 +117,9 @@ export default function SignupPage() {
           alignItems: 'center',
         }}
       >
+        {/* Logo + Brand */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Logo Box */}
           <div
             style={{
               width: '32px',
@@ -81,18 +131,26 @@ export default function SignupPage() {
               justifyContent: 'center',
             }}
           >
+            {/* Logo Text */}
             <span style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>B</span>
           </div>
+
+          {/* Navigate to Home Page */}
           <Link
             href="/"
-            style={{ color: 'white', fontWeight: '700', fontSize: '18px', textDecoration: 'none' }}
+            style={{
+              color: 'white',
+              fontWeight: '700',
+              fontSize: '18px',
+              textDecoration: 'none',
+            }}
           >
             BlogSphere
           </Link>
         </div>
       </nav>
 
-      {/* Form */}
+      {/* Main Form Container */}
       <div
         style={{
           flex: 1,
@@ -102,6 +160,7 @@ export default function SignupPage() {
           padding: '40px 16px',
         }}
       >
+        {/* Signup Card */}
         <div
           style={{
             backgroundColor: 'white',
@@ -112,7 +171,9 @@ export default function SignupPage() {
             maxWidth: '420px',
           }}
         >
+          {/* Header Section */}
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            {/* Large Logo */}
             <div
               style={{
                 width: '48px',
@@ -127,152 +188,80 @@ export default function SignupPage() {
             >
               <span style={{ color: 'white', fontWeight: '700', fontSize: '22px' }}>B</span>
             </div>
+
+            {/* Title */}
             <h1
-              style={{ fontSize: '22px', fontWeight: '700', color: '#1e293b', margin: '0 0 4px' }}
+              style={{
+                fontSize: '22px',
+                fontWeight: '700',
+                color: '#1e293b',
+                margin: '0 0 4px',
+              }}
             >
               Create account
             </h1>
+
+            {/* Subtitle */}
             <p style={{ fontSize: '14px', color: '#64748b', margin: '0' }}>Join BlogSphere today</p>
           </div>
 
+          {/* Signup Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Name Field */}
             <div style={{ marginBottom: '16px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  color: '#374151',
-                  marginBottom: '6px',
-                }}
-              >
-                Name
-              </label>
-              <input
-                {...register('name')}
-                type="text"
-                placeholder="Your full name"
-                style={{
-                  width: '100%',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  padding: '10px 14px',
-                  fontSize: '14px',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-              {errors.name && (
-                <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
-                  {errors.name.message}
-                </p>
-              )}
+              <label>Name</label>
+
+              {/* Name Input */}
+              <input {...register('name')} type="text" placeholder="Your full name" />
+
+              {/* Show name validation error */}
+              {errors.name && <p>{errors.name.message}</p>}
             </div>
 
+            {/* Email Field */}
             <div style={{ marginBottom: '16px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  color: '#374151',
-                  marginBottom: '6px',
-                }}
-              >
-                Email
-              </label>
-              <input
-                {...register('email')}
-                type="email"
-                placeholder="you@example.com"
-                style={{
-                  width: '100%',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  padding: '10px 14px',
-                  fontSize: '14px',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-              {errors.email && (
-                <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
-                  {errors.email.message}
-                </p>
-              )}
+              <label>Email</label>
+
+              {/* Email Input */}
+              <input {...register('email')} type="email" placeholder="you@example.com" />
+
+              {/* Show email validation error */}
+              {errors.email && <p>{errors.email.message}</p>}
             </div>
 
+            {/* Password Field */}
             <div style={{ marginBottom: '24px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  color: '#374151',
-                  marginBottom: '6px',
-                }}
-              >
-                Password
-              </label>
-              <input
-                {...register('password')}
-                type="password"
-                placeholder="••••••••"
-                style={{
-                  width: '100%',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '8px',
-                  padding: '10px 14px',
-                  fontSize: '14px',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-              {errors.password && (
-                <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
-                  {errors.password.message}
-                </p>
-              )}
+              <label>Password</label>
+
+              {/* Password Input */}
+              <input {...register('password')} type="password" placeholder="••••••••" />
+
+              {/* Show password validation error */}
+              {errors.password && <p>{errors.password.message}</p>}
             </div>
 
+            {/* Global Error Message */}
             {error && (
-              <div
-                style={{
-                  backgroundColor: '#fef2f2',
-                  border: '1px solid #fecaca',
-                  borderRadius: '8px',
-                  padding: '10px 14px',
-                  marginBottom: '16px',
-                }}
-              >
-                <p style={{ color: '#dc2626', fontSize: '13px', margin: '0' }}>{error}</p>
+              <div>
+                <p>{error}</p>
               </div>
             )}
 
+            {/* Submit Button */}
             <button
               type="submit"
+              // Disable button while loading
               disabled={loading}
-              style={{
-                width: '100%',
-                backgroundColor: loading ? '#93c5fd' : '#3b82f6',
-                color: 'white',
-                padding: '12px',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: '600',
-                border: 'none',
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
             >
+              {/* Dynamic button text */}
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', fontSize: '13px', color: '#64748b', marginTop: '20px' }}>
-            Already have an account?{' '}
-            <Link href="/login" style={{ color: '#3b82f6', fontWeight: '600' }}>
-              Sign in
-            </Link>
+          {/* Login Redirect */}
+          <p>
+            Already have an account? {/* Navigate to login page */}
+            <Link href="/login">Sign in</Link>
           </p>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-
+import DashboardNavbar from '@/components/DahboardNavbar'
 export default function CreateBlogPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -16,18 +16,23 @@ export default function CreateBlogPage() {
 
   useEffect(() => {
     fetch('/api/users/me', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setUserId(data.user?.id || data.id))
+      .then((res) => res.json())
+      .then((data) => setUserId(data.user?.id || data.id))
   }, [])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       [name]: value,
       ...(name === 'title' && {
-        slug: value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-      })
+        slug: value
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, ''),
+      }),
     }))
   }
 
@@ -111,30 +116,87 @@ export default function CreateBlogPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
-      <nav style={{ backgroundColor: '#1e293b', padding: '14px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <DashboardNavbar />
+      {/* <nav
+        style={{
+          backgroundColor: '#1e293b',
+          padding: '14px 32px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '32px', height: '32px', backgroundColor: '#3b82f6', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div
+            style={{
+              width: '32px',
+              height: '32px',
+              backgroundColor: '#3b82f6',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <span style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>B</span>
           </div>
-          <Link href="/dashboard" style={{ color: 'white', fontWeight: '700', fontSize: '18px', textDecoration: 'none' }}>BlogSphere</Link>
+          <Link
+            href="/dashboard"
+            style={{ color: 'white', fontWeight: '700', fontSize: '18px', textDecoration: 'none' }}
+          >
+            BlogSphere
+          </Link>
         </div>
-        <Link href="/dashboard" style={{ color: '#94a3b8', fontSize: '14px', textDecoration: 'none' }}>← Back to Dashboard</Link>
-      </nav>
+        <Link
+          href="/dashboard"
+          style={{ color: '#94a3b8', fontSize: '14px', textDecoration: 'none' }}
+        >
+          ← Back to Dashboard
+        </Link>
+      </nav> */}
 
       <main style={{ maxWidth: '760px', margin: '0 auto', padding: '40px 24px' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: '800', color: '#1e293b', margin: '0 0 24px' }}>Create New Blog</h1>
+        <h1 style={{ fontSize: '24px', fontWeight: '800', color: '#1e293b', margin: '0 0 24px' }}>
+          Create New Blog
+        </h1>
 
-        <form onSubmit={handleSubmit} style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            backgroundColor: 'white',
+            borderRadius: '16px',
+            border: '1px solid #e2e8f0',
+            padding: '32px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
           <div>
             <label style={labelStyle}>Title</label>
-            <input name="title" value={form.title} onChange={handleChange} placeholder="My awesome blog post" required style={inputStyle} />
+            <input
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              placeholder="My awesome blog post"
+              required
+              style={inputStyle}
+            />
           </div>
 
           <div>
             <label style={labelStyle}>Slug</label>
-            <input name="slug" value={form.slug} onChange={handleChange} placeholder="my-awesome-blog-post" required style={{ ...inputStyle, backgroundColor: '#f8fafc', color: '#64748b' }} />
-            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>Auto-generated from title</p>
+            <input
+              name="slug"
+              value={form.slug}
+              onChange={handleChange}
+              placeholder="my-awesome-blog-post"
+              required
+              style={{ ...inputStyle, backgroundColor: '#f8fafc', color: '#64748b' }}
+            />
+            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>
+              Auto-generated from title
+            </p>
           </div>
 
           {/* Cover Image Upload */}
@@ -153,23 +215,60 @@ export default function CreateBlogPage() {
             >
               {imagePreview ? (
                 <div>
-                  <img src={imagePreview} alt="Preview" style={{ maxHeight: '200px', borderRadius: '8px', marginBottom: '8px', maxWidth: '100%', objectFit: 'cover' }} />
-                  <p style={{ fontSize: '13px', color: '#64748b', margin: '0' }}>Click to change image</p>
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    style={{
+                      maxHeight: '200px',
+                      borderRadius: '8px',
+                      marginBottom: '8px',
+                      maxWidth: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: '0' }}>
+                    Click to change image
+                  </p>
                 </div>
               ) : (
                 <div>
                   <p style={{ fontSize: '32px', margin: '0 0 8px' }}>🖼️</p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#374151', margin: '0 0 4px' }}>Click to upload cover image</p>
-                  <p style={{ fontSize: '12px', color: '#94a3b8', margin: '0' }}>PNG, JPG, WEBP up to 10MB</p>
+                  <p
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      color: '#374151',
+                      margin: '0 0 4px',
+                    }}
+                  >
+                    Click to upload cover image
+                  </p>
+                  <p style={{ fontSize: '12px', color: '#94a3b8', margin: '0' }}>
+                    PNG, JPG, WEBP up to 10MB
+                  </p>
                 </div>
               )}
             </div>
-            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+            />
           </div>
 
           <div>
             <label style={labelStyle}>Content</label>
-            <textarea name="content" value={form.content} onChange={handleChange} placeholder="Write your blog content here..." rows={10} required style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.6' }} />
+            <textarea
+              name="content"
+              value={form.content}
+              onChange={handleChange}
+              placeholder="Write your blog content here..."
+              rows={10}
+              required
+              style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.6' }}
+            />
           </div>
 
           <div>
@@ -196,13 +295,28 @@ export default function CreateBlogPage() {
                 cursor: loading || uploadingImage ? 'not-allowed' : 'pointer',
               }}
             >
-              {uploadingImage ? '📤 Uploading image...' : loading ? 'Creating...' : '🚀 Publish Blog'}
+              {uploadingImage
+                ? '📤 Uploading image...'
+                : loading
+                  ? 'Creating...'
+                  : '🚀 Publish Blog'}
             </button>
-            <Link href="/dashboard" style={{ padding: '12px 20px', borderRadius: '8px', fontSize: '15px', border: '1px solid #e2e8f0', color: '#64748b', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <Link
+              href="/dashboard"
+              style={{
+                padding: '12px 20px',
+                borderRadius: '8px',
+                fontSize: '15px',
+                border: '1px solid #e2e8f0',
+                color: '#64748b',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
               Cancel
             </Link>
           </div>
-
         </form>
       </main>
     </div>
